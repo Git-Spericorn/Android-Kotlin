@@ -39,13 +39,15 @@ class MainActivity : BaseActivity() {
 
             Log.e("ThreadName 0", Thread.currentThread().name)
 
-           //Initializing a 
+           //Initializing a list with the response from the network request.
            val payList = mainViewModel.getIncomingTracePaymentList()
 
+	    //Performing a coroutine within the Main Thread.
             withContext(Dispatchers.Main){
 
                 Log.e("ThreadName 1", Thread.currentThread().name)
 
+		//Observing for the changes in the data with the help of ViewModel.   
                 payList.observe(this@MainActivity,Observer<TracePayModel>{
 
                         tracePayModel ->
@@ -57,7 +59,8 @@ class MainActivity : BaseActivity() {
                             if (tracePayModel.DATA?.IncomingTracePayment!!.isNotEmpty()){
 
                                 tracePayModel.DATA?.IncomingTracePayment?.let {
-
+				 
+				    //Setting the data to recyclerView if the response is not null.
                                     val paymentList : MutableList<IncomingTracePayModel> = ArrayList()
                                     paymentList.addAll(it)
                                     val tracePaymentAdapter = TracePaymentAdapter(paymentList)
